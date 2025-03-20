@@ -241,8 +241,8 @@ def eval():
         else:
             datasets = dataset_dict[scorer.data_type]
         _, score = scorer(datasets)
-    # save_path = cfg['save_path']
-    score_record.dump_scores_api()
+    save_path = cfg['save_path']
+    score_record.dump_scores_api(save_path)
 
 
 def get_processor(processor_name, args):
