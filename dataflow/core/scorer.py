@@ -20,6 +20,28 @@ class ScoreRecord():
         recursive_func(val, partial(round_to_sigfigs, sigfigs=4), rounded_val)
         return rounded_val
 
+    def dump_scores_api(self, filename=None):
+        scores_len = recursive_len(self.item_score) if self.item_score else 0
+        print(f"scores_len:{scores_len}")
+        rounded_meta_score = {}
+        recursive_func(self.meta_score, partial(round_to_sigfigs, sigfigs=4), rounded_meta_score)
+        item_scores_indexed_and_rounded = {}
+        recursive_func(self.item_score, partial(round_to_sigfigs, sigfigs=4), item_scores_indexed_and_rounded)
+        # for idx in range(scores_len):
+        #     item_scores_indexed_and_rounded[str(idx)] = self[idx]
+        if filename is None:
+            print({
+                    'meta_scores': rounded_meta_score,
+                    'item_scores': item_scores_indexed_and_rounded,
+                })
+        else:
+            with open(filename, 'w+') as f:
+                json.dump({
+                    'meta_scores': rounded_meta_score,
+                    'item_scores': item_scores_indexed_and_rounded,
+                }, f, indent=4)
+            print(f"Scores saved to {filename}")
+
     def dump_scores(self, filename=None):
         scores_len = recursive_len(self.item_score) if self.item_score else 0
         print(f"scores_len:{scores_len}")

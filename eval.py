@@ -1,3 +1,3 @@
-from dataflow.utils import calculate_score
+from dataflow.utils import eval
 
-calculate_score()
+eval()

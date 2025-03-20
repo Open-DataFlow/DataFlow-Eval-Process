@@ -20,10 +20,25 @@ def round_to_sigfigs(num, sigfigs):
     import math
     if isinstance(num, np.float32):
         num = float(num)
-    if num == 0:
-        return 0
+        if num == 0:
+            return 0
+        elif np.isnan(num):
+            return np.nan
+        else:
+            return round(num, sigfigs - int(math.floor(math.log10(abs(num)))) - 1)
+    elif isinstance(num, (np.ndarray)):
+        result = []
+        for item in num.tolist():
+            if item == 0:
+                result.append(0)
+            elif np.isnan(item):
+                result.append(np.nan)
+            else:
+                result.append(round(item, sigfigs - int(math.floor(math.log10(abs(item)))) - 1))
+        return np.array(result)
     else:
-        return round(num, sigfigs - int(math.floor(math.log10(abs(num)))) - 1)
+        raise ValueError("Input should be np.float or np.ndarray!")
+
 
 
 def recursive_insert(ds_scores_dict, scores: dict, idx_list):
@@ -56,6 +71,8 @@ def recursive_func(scores: dict, func, output: dict):
                 output[k] = func(v)
         elif isinstance(v, str):
             output[k] = v  
+        # elif isinstance(v, list):
+        #     output[k] = [func(_) for _ in v]
         else:
             raise ValueError(f"Invalid scores type {type(v)} returned")
 
@@ -186,6 +203,47 @@ def calculate_score():
         _, score = scorer(datasets)
     save_path = cfg['save_path']
     score_record.dump_scores(save_path)
+
+def eval():
+    from ..config import api_init_config
+    from dataflow.utils.registry import FORMATTER_REGISTRY
+    from dataflow.core import ScoreRecord
+
+    cfg = api_init_config()
+    if isinstance(cfg.yaml, str):
+        with open(cfg.yaml, 'r') as f:
+            cfg.yaml = yaml.safe_load(f)  # 解析成字典
+    # for x in cfg['dependencies']:
+    #     if x == 'text':
+    #         import dataflow.Eval.Text
+    #     elif x == 'image':
+    #         import dataflow.Eval.image
+    #     elif x == 'video':
+    #         import dataflow.Eval.video
+    #     else:
+    #         raise ValueError('Please Choose Dependencies in text, image, video!')
+        
+
+    dataset_dict = {}
+    score_record = ScoreRecord()
+    for scorer_name, model_args in cfg.yaml.items():
+        if "num_workers" in cfg:
+            model_args["num_workers"] = cfg.num_workers
+        if "model_cache_path" in cfg:
+            model_args["model_cache_dir"] = cfg.model_cache_path
+        scorer = new_get_scorer(scorer_name, model_args)
+        if scorer.data_type not in dataset_dict:
+            formatter = FORMATTER_REGISTRY.get('TextFormatter')(cfg['data'], cfg['key'], cfg['sft_single_round'], cfg['sft_multi_round'], cfg['RLHF'])
+            datasets = formatter.load_dataset()
+            dataset_dict[scorer.data_type] = datasets
+            dataset = datasets[0] if type(datasets) == tuple else datasets
+            dataset.set_score_record(score_record)
+        else:
+            datasets = dataset_dict[scorer.data_type]
+        _, score = scorer(datasets)
+    # save_path = cfg['save_path']
+    score_record.dump_scores_api()
+
 
 def get_processor(processor_name, args):
     from dataflow.utils.registry import PROCESSOR_REGISTRY

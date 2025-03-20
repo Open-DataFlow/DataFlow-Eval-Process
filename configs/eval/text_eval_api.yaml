@@ -1,0 +1,6 @@
+NgramScorer:
+    ngrams: 5
+LexicalDiversityScorer:
+  metrics_to_keep:
+    mtld: True
+    hdd: True

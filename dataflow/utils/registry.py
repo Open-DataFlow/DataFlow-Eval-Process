@@ -133,9 +133,11 @@ class LazyLoader(types.ModuleType):
         :param class_name: 类的名字
         :return: 类对象
         """
+        from pathlib import Path
         # 适配API修改
-        file_path = os.path.join('DataFlow-Eval-Process', file_path)
-
+        df_root_path = Path(__file__).resolve().parents[2]
+        print(df_root_path)
+        file_path = os.path.join(df_root_path, file_path)
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"File {file_path} does not exist")
         
