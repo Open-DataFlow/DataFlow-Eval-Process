@@ -35,8 +35,8 @@ class MinHashDeduplicator(TextDeduplicator):
                 minhash = self.create_minhash(text)
                 result = lsh.query(minhash)
                 hash_values.append(result)
-        print(json.dumps({"hash_values": hash_values}))
-        return json.dumps({"hash_values": hash_values})
+        # print(json.dumps({"hash_values": hash_values}))
+        return json.dumps({"minhash_hash_values": hash_values})
 
         
 
