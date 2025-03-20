@@ -30,7 +30,7 @@ class ScoreRecord():
         # for idx in range(scores_len):
         #     item_scores_indexed_and_rounded[str(idx)] = self[idx]
         if filename is None:
-            print(json.dump({
+            print(json.dumps({
                     'meta_scores': rounded_meta_score,
                     'item_scores': item_scores_indexed_and_rounded,
                 }))
