@@ -35,7 +35,7 @@ def round_to_sigfigs(num, sigfigs):
                 result.append(np.nan)
             else:
                 result.append(round(item, sigfigs - int(math.floor(math.log10(abs(item)))) - 1))
-        return np.array(result)
+        return result
     else:
         raise ValueError("Input should be np.float or np.ndarray!")
 
