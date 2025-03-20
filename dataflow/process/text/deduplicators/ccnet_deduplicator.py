@@ -25,7 +25,8 @@ class CCNetDeduplicator(TextDeduplicator):
                 text = str(sample[dataset.keys]).encode('utf-8')
             hash_value = self._compute_hash(text)
             hash_values.append(hash_value)
-        print(json.dumps({"hash_values": hash_values}))
-        return hash_values
+        # print(json.dumps({"ccnet_hash_values": hash_values}))
+
+        return json.dumps({"ccnet_hash_values": hash_values})
 
     

@@ -87,5 +87,5 @@ class SemDeduplicator(TextDeduplicator):
         # Compute embeddings for the dataset texts
         embeddings = get_text_embedding(texts, self.tokenizer, self.model, self.device)
         embeddings = normalize(torch.tensor(embeddings), dim=1)
-        print(json.dumps({"embeddings": embeddings.tolist()}))
-        return json.dumps({"embeddings": embeddings.tolist()})
+        # print(json.dumps({"embeddings": embeddings.tolist()}))
+        return json.dumps({"semhash_embeddings": embeddings.tolist()})
