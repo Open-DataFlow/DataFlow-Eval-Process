@@ -287,11 +287,8 @@ def filter():
     result[recorder] = True
     result = result.tolist()
     save_path = cfg['save_path']
-    from bitarray import bitarray
-    ba = bitarray(result)
-    with open(save_path, 'wb') as f:
-        ba.tofile(f)
-    print(json.dumps({"bool": result}))
+    with open(save_path, 'w') as f:
+        json.dump({"bool": result}, f)
 
 def refine():
     from ..config import api_init_config
