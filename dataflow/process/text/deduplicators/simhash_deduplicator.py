@@ -32,6 +32,6 @@ class SimHashDeduplicator(TextDeduplicator):
             simhash = Simhash(text, f=self.fingerprint_size)
             simhashes.append(simhash)
         # print(json.dumps({"hash_values": [simhash.value for simhash in simhashes]}))
-        return json.dumps({"simhash_values": [simhash.value for simhash in simhashes]})
+        return {"simhash_values": [simhash.value for simhash in simhashes]}
         
 

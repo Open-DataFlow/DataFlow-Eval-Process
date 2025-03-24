@@ -286,6 +286,11 @@ def filter():
     #     dataset.dump(save_path)
     result[recorder] = True
     result = result.tolist()
+    save_path = cfg['save_path']
+    from bitarray import bitarray
+    ba = bitarray(result)
+    with open(save_path, 'wb') as f:
+        ba.tofile(f)
     print(json.dumps({"bool": result}))
 
 def refine():
@@ -299,7 +304,7 @@ def refine():
     if isinstance(cfg.yaml, str):
         with open(cfg.yaml, 'r') as f:
             cfg.yaml = yaml.safe_load(f)  # 解析成字典
-    
+
     for scorer_name, args in cfg.yaml.items():
         if "num_workers" in cfg:
             args["num_workers"] = cfg.num_workers
@@ -329,7 +334,7 @@ def deduplicate():
     if isinstance(cfg.yaml, str):
         with open(cfg.yaml, 'r') as f:
             cfg.yaml = yaml.safe_load(f)  # 解析成字典
-    
+    result = []
     for scorer_name, args in cfg.yaml.items():
         if "num_workers" in cfg:
             args["num_workers"] = cfg.num_workers
@@ -342,9 +347,11 @@ def deduplicate():
             dataset_dict[processor.data_type] = datasets
         else:
             datasets = dataset_dict[processor.data_type]
-        processed_dataset = processor(datasets)
-        dataset_dict[processor.data_type] = processed_dataset
-        print(processed_dataset)
+        result.append(processor(datasets))
+        # dataset_dict[processor.data_type] = processed_dataset
+    save_path = cfg['save_path']
+    with open(save_path, 'w') as f:
+        json.dump(result, f)
 
 
             

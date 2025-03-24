@@ -27,6 +27,6 @@ class CCNetDeduplicator(TextDeduplicator):
             hash_values.append(hash_value)
         # print(json.dumps({"ccnet_hash_values": hash_values}))
 
-        return json.dumps({"ccnet_hash_values": hash_values})
+        return {"ccnet_hash_values": hash_values}
 
     

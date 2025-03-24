@@ -8,4 +8,3 @@ FineWebEduFilter:
   max_score: 100
   scorer_args:
     model_name: 'HuggingFaceTB/fineweb-edu-classifier'
-    device: 'cuda:4'

@@ -1,0 +1,4 @@
+HashDeduplicator: 
+  hash_func: 'md5'
+CCNetDeduplicator: 
+  bit_length: 64 # should be a multiple of 8

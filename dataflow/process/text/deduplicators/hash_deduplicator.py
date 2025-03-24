@@ -31,4 +31,4 @@ class HashDeduplicator(TextDeduplicator):
             hash_value = self._compute_hash(text)
             hash_values.append(hash_value)
         # print(json.dumps({"hash_values": hash_values}))
-        return json.dumps({"exact_hash_values": hash_values})
+        return {"exact_hash_values": hash_values}

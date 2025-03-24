@@ -33,7 +33,7 @@ class NgramHashDeduplicator(TextDeduplicator):
             hash_value = set(self._compute_hash(ngram) for ngram in ngrams)
             hash_values.append(hash_value)
         # print(json.dumps({"hash_values": hash_values}))
-        return json.dumps({"ngram_hash_values": hash_values})
+        return {"ngram_hash_values": hash_values}
 
 
                 

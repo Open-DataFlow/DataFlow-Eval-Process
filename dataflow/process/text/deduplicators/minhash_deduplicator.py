@@ -36,7 +36,7 @@ class MinHashDeduplicator(TextDeduplicator):
                 result = lsh.query(minhash)
                 hash_values.append(result)
         # print(json.dumps({"hash_values": hash_values}))
-        return json.dumps({"minhash_hash_values": hash_values})
+        return {"minhash_hash_values": hash_values}
 
         
 
